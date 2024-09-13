@@ -8,25 +8,35 @@ import javafx.scene.control.TextField;
 public class LoanCalculatorController {
 
     @FXML
-    private Button btcomputePayment;
+private TextField tfaInterestRate;
 
     @FXML
-    private TextField la;
+private TextField tfnOfYears;
 
     @FXML
-    private TextField tfannInterestRate;
+private TextField la;
 
     @FXML
-    private TextField tfmonthlyPayment;
+private TextField tfmPayment;
 
     @FXML
-    private TextField tfnumOfYears;
+private TextField tftPayment;
 
     @FXML
-    private TextField tftotalPayment;
+private Button btcPayment;
 
     @FXML
-    void calculateLoanPayment(ActionEvent event) {
+void calculate(ActionEvent event) {
+        double loanAmount = Double.parseDouble(la.getText());
+        double annualInterestRate = Double.parseDouble(tfaInterestRate.getText());
+        int numOfYears = Integer.parseInt(tfnOfYears.getText());
+        double monthlyInterestRate = annualInterestRate / 1200;
+        int numOfPayments = numOfYears * 12;
+        double monthlyPayment = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate,numOfPayments)) / (Math.pow(1+monthlyInterestRate,numOfPayments)-1);
+        double totalPayment = monthlyPayment * numOfPayments;
+        tfmPayment.setText(String.format("$%.2f",monthlyPayment));
+        tftPayment.setText(String.format("$%.2f",totalPayment));
+        btcPayment.setOnAction(this::calculate);
 
     }
 
